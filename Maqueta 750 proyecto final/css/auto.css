@@ -1,0 +1,39 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    background-color: rgb(0, 0, 0);
+}
+
+body {
+    width: 750px;
+    height: 750px;
+    background-color: rgb(19, 4, 63);
+    margin: auto;
+}
+
+.container h1{
+    color: white;
+}
+
+
+hr{
+    margin-left: 212px;
+}
+
+footer {
+    color: white;
+    width: 750px;
+    height: 100px;
+    background-color: #071486;
+    margin-left: -16px;
+}
+
+footer h5{
+    text-align: center;
+}
+
+
+/*----------------------------------------------*/

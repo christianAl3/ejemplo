@@ -1,0 +1,74 @@
+[
+    {
+      "precio": "$21,229",
+      "id": 1,
+      "title": "Computadora Gamer Xtreme PC Gaming CM-60404",
+      "thumbnailUrl": "https://christian01010.000webhostapp.com/PCSS/PC1.png"
+    },
+    {
+      "precio": "$45,609",
+      "id": 2,
+      "title": "Computadora Gamer Xtreme PC Gaming CM-61020",
+      "thumbnailUrl": "https://christian01010.000webhostapp.com/PCSS/PC2.png"
+    },
+    {
+      "precio": "$18,869",
+      "id": 3,
+      "title": "Computadora Gamer Grizzly PG-INTEL052",
+      "thumbnailUrl": "https://christian01010.000webhostapp.com/PCSS/PC3.png"
+    },
+    {
+      "precio": "$5,449",
+      "id": 4,
+      "title": "Computadora Gamer Xtreme PC Gaming CM-99915",
+      "thumbnailUrl": "https://christian01010.000webhostapp.com/PCSS/PC4.png"
+    },
+    {
+      "precio": "$26,309",
+      "id": 5,
+      "title": "Computadora Gamer Xtreme PC Gaming CM-30075",
+      "thumbnailUrl": "https://christian01010.000webhostapp.com/PCSS/PC5.png"
+    },
+    {
+      "precio": "$20,319",
+      "id": 6,
+      "title": "Computadora Gamer Xtreme PC Gaming CM-91036",
+      "thumbnailUrl": "https://christian01010.000webhostapp.com/PCSS/PC6.png"
+    },
+    {
+        "precio": "$23,269",
+        "id": 7,
+        "title": "Computadora Gamer Xtreme PC Gaming CM-30074",
+        "thumbnailUrl": "https://christian01010.000webhostapp.com/PCSS/PC7.png"
+      },
+      {
+        "precio": "$29,799",
+        "id": 8,
+        "title": "Computadora Gamer Game Factor ZARO CSG300",
+        "thumbnailUrl": "https://christian01010.000webhostapp.com/PCSS/PC8.png"
+      },
+      {
+        "precio": "$25,349",
+        "id": 9,
+        "title": "Computadora Gamer Zotac MEK HERO G1 A5636",
+        "thumbnailUrl": "https://christian01010.000webhostapp.com/PCSS/PC9.png"
+      }, 
+      {
+        "precio": "$12,139",
+        "id": 10,
+        "title": "Computadora Gamer PowerBit BYTE VIII BLACK",
+        "thumbnailUrl": "https://christian01010.000webhostapp.com/PCSS/PC10.png"
+      },
+      {
+        "precio": "$7,469",
+        "id": 11,
+        "title": "Computadora Gamer Xtreme PC Gaming CM-053602",
+        "thumbnailUrl": "https://christian01010.000webhostapp.com/PCSS/PC11.png"
+      },
+      {
+        "precio": "$11,179",
+        "id": 12,
+        "title": "Computadora Gamer Xtreme PC Gaming CM-50361",
+        "thumbnailUrl": "https://christian01010.000webhostapp.com/PCSS/PC12.png"
+      }   
+  ]
