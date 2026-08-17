@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Reporta tu Bache</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="app-header">
+  <h1>🕳️ Reporta tu Bache</h1>
+</header>
+
+<main>
+
+  <section id="view-reportar" class="view active">
+    <form id="form-reporte">
+      <div class="field">
+        <label>Foto del bache</label>
+        <div class="photo-box">
+          <img id="preview-foto" class="hidden" alt="Vista previa">
+          <label for="input-foto" class="btn btn-secondary">📷 Tomar foto</label>
+          <input type="file" id="input-foto" accept="image/*" capture="environment" class="hidden">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Ubicación</label>
+        <button type="button" id="btn-ubicacion" class="btn btn-secondary">📍 Obtener mi ubicación</button>
+        <p id="texto-ubicacion" class="hint">Aún no se ha obtenido la ubicación</p>
+      </div>
+
+      <div class="field">
+        <label for="input-descripcion">Descripción</label>
+        <textarea id="input-descripcion" rows="3" placeholder="Ej. Bache grande en el carril derecho, cerca de la esquina..."></textarea>
+      </div>
+
+      <div class="field">
+        <label for="input-severidad">Gravedad</label>
+        <select id="input-severidad">
+          <option value="leve">Leve</option>
+          <option value="moderado" selected>Moderado</option>
+          <option value="grave">Grave / peligroso</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Guardar reporte</button>
+      <p id="msg-error" class="error hidden"></p>
+    </form>
+  </section>
+
+  <section id="view-lista" class="view">
+    <div id="lista-reportes"></div>
+    <p id="lista-vacia" class="hint hidden">Todavía no hay reportes guardados.</p>
+  </section>
+
+  <section id="view-mapa" class="view">
+    <div id="map"></div>
+  </section>
+
+</main>
+
+<nav class="bottom-nav">
+  <button class="nav-btn active" data-view="view-reportar">➕<span>Reportar</span></button>
+  <button class="nav-btn" data-view="view-lista">📋<span>Reportes</span></button>
+  <button class="nav-btn" data-view="view-mapa">🗺️<span>Mapa</span></button>
+</nav>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
