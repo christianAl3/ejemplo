@@ -1,37 +1,45 @@
-# BacheApp — Reporta tu Bache
+# BacheReport
 
-Aplicación web para reportar baches: toma (o elige) una foto, captura la
-ubicación GPS, define su gravedad y le da seguimiento con estado. Incluye
-un mini-dashboard, filtros, mapa con marcadores por color y exportación de
-datos. Todo corre localmente en el navegador, sin servidor, sin base de
-datos y sin costo.
+Aplicación web para reportar baches con un asistente de 4 pasos (evidencia
+fotográfica, ubicación, detalles y seguimiento), dashboard de estadísticas,
+mapa con marcadores por gravedad y exportación de datos. Todo corre
+localmente en el navegador, sin servidor, sin base de datos y sin costo.
 
-## Funciones
+## Pantallas
 
-- **Foto**: botón de cámara (`capture="environment"`) o botón para elegir
-  una imagen ya existente de la galería — útil si estás probando sin poder
-  fotografiar un bache real en el momento.
-- **Ubicación**: usa `navigator.geolocation` (GPS del celular) con spinner
-  de carga, y convierte las coordenadas en dirección legible con Nominatim
-  (OpenStreetMap, gratis, sin API key). Sin internet, muestra solo
+- **Inicio**: tarjeta de bienvenida con botón "Reportar un bache",
+  estadísticas rápidas y tus reportes más recientes.
+- **Nuevo Reporte** (asistente de 4 pasos):
+  1. *Evidencia Visual* — hasta 3 fotos, por cámara o galería.
+  2. *Ubicación del Bache* — mapa con pin arrastrable centrado en tu GPS
+     (con botón para recentrar), o toca el mapa para ajustar el punto.
+  3. *Detalles del Reporte* — gravedad (Leve/Moderado/Grave), tipo de
+     bache y descripción.
+  4. *Estado y Seguimiento* — barra de progreso del ciclo de vida del
+     reporte (Reportado → En Revisión → Programado → Reparado), marcar
+     alta prioridad, referencia visual y opción de reportar anónimo.
+- **Mis Reportes**: lista con filtro por gravedad, orden, exportar a JSON,
+  compartir y eliminar. Toca la etiqueta de estado de cada tarjeta para
+  avanzarla en su ciclo de vida.
+- **Mapa**: todos los baches reportados con marcadores de color según su
+  gravedad (Leaflet + OpenStreetMap, gratis, sin API key).
+- **Perfil**: resumen, exportar reportes, eliminar todos los datos y
+  acerca de la app.
+
+## Cómo funciona por dentro
+
+- **Foto**: `<input type="file" capture="environment">` para cámara, y un
+  input normal para elegir de galería — no requiere permisos especiales.
+- **Ubicación**: `navigator.geolocation` (GPS del celular). Además intenta
+  convertir las coordenadas en una dirección legible con Nominatim
+  (OpenStreetMap, gratis, sin API key); sin internet se queda con las
   coordenadas.
-- **Gravedad**: selector visual (leve / moderado / grave).
-- **Dashboard**: tarjetas con total de reportes, cuántos son graves y
-  cuántos ya están resueltos.
-- **Estado del reporte**: cada reporte inicia como "Pendiente"; toca la
-  etiqueta de estado para avanzarlo a "En revisión" y luego "Resuelto".
-- **Filtros y orden**: filtra la lista por gravedad y ordénala por fecha o
-  por gravedad.
-- **Compartir**: botón para compartir un reporte (usa el share nativo del
-  celular, o copia el texto si el navegador no lo soporta).
-- **Exportar**: descarga todos los reportes en un archivo `.json` como
-  respaldo o para anexarlo a tu entrega.
-- **Guardado**: los reportes se guardan en `localStorage` del navegador,
-  quedan en el celular, no se suben a ningún servidor.
-- **Mapa**: Leaflet + mosaicos de OpenStreetMap (gratis, sin cuenta) con
-  marcadores de color según la gravedad del bache.
-- **Instalable**: incluye `manifest.json` e ícono para poder añadirla a la
-  pantalla de inicio como si fuera una app nativa.
+- **Guardado**: todo se guarda en `localStorage` del navegador — queda en
+  el celular, nada se sube a un servidor.
+- **Resiliente sin internet/CDN**: si el mapa (Leaflet, cargado desde un
+  CDN) no puede cargar —por ejemplo, si la red bloquea dominios externos—
+  la app lo detecta y te deja seguir reportando solo con el GPS, sin
+  trabarse.
 
 ## Cómo probarla/presentarla en tu celular (gratis, sin publicar nada)
 

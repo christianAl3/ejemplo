@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#ff7a1a">
-<title>BacheApp — Reporta tu Bache</title>
+<meta name="theme-color" content="#2557d6">
+<title>BacheReport</title>
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icon.svg">
@@ -15,105 +15,235 @@
 </head>
 <body>
 
-<header class="app-header">
-  <div class="brand">
-    <span class="brand-icon">🕳️</span>
-    <div>
-      <h1>BacheApp</h1>
-      <p class="tagline">Reporta baches, mejora tu comunidad</p>
-    </div>
+<header class="topbar">
+  <div class="topbar-brand">
+    <span class="topbar-logo">📍</span>
+    <h1>BacheReport</h1>
+  </div>
+  <div class="topbar-actions">
+    <button id="btn-config" class="icon-btn" aria-label="Configuración">⚙️</button>
+    <button id="btn-notif" class="icon-btn" aria-label="Notificaciones">
+      🔔<span id="notif-dot" class="dot hidden"></span>
+    </button>
   </div>
 </header>
 
 <main>
 
-  <!-- Vista: Reportar -->
-  <section id="view-reportar" class="view active">
-    <form id="form-reporte">
-      <div class="field">
-        <label>Foto del bache</label>
-        <div class="photo-box">
-          <img id="preview-foto" class="hidden" alt="Vista previa">
-          <div class="photo-actions">
-            <label for="input-foto-camara" class="btn btn-secondary">📷 Tomar foto</label>
-            <input type="file" id="input-foto-camara" accept="image/*" capture="environment" class="hidden">
-            <label for="input-foto-galeria" class="btn btn-ghost">🖼️ Elegir de galería</label>
-            <input type="file" id="input-foto-galeria" accept="image/*" class="hidden">
-          </div>
-        </div>
-      </div>
+  <!-- Inicio -->
+  <section id="view-inicio" class="view active">
+    <div class="hero-card">
+      <h2>¡Ayuda a mejorar tu comunidad!</h2>
+      <p>Reporta baches con foto y ubicación exacta en menos de un minuto.</p>
+      <button id="btn-nuevo-reporte" class="btn btn-cta">➕ Reportar un bache</button>
+    </div>
 
-      <div class="field">
-        <label>Ubicación</label>
-        <button type="button" id="btn-ubicacion" class="btn btn-secondary">
-          <span id="spinner-ubicacion" class="spinner hidden"></span>
-          <span id="texto-btn-ubicacion">📍 Obtener mi ubicación</span>
-        </button>
-        <p id="texto-ubicacion" class="hint">Aún no se ha obtenido la ubicación</p>
-      </div>
+    <div class="stats-row" id="stats-row-inicio"></div>
 
-      <div class="field">
-        <label for="input-descripcion">Descripción</label>
-        <textarea id="input-descripcion" rows="3" placeholder="Ej. Bache grande en el carril derecho, cerca de la esquina..."></textarea>
-      </div>
-
-      <div class="field">
-        <label>Gravedad</label>
-        <div class="severidad-selector" id="severidad-selector">
-          <button type="button" class="chip chip-leve" data-valor="leve">🟢 Leve</button>
-          <button type="button" class="chip chip-moderado active" data-valor="moderado">🟠 Moderado</button>
-          <button type="button" class="chip chip-grave" data-valor="grave">🔴 Grave</button>
-        </div>
-      </div>
-
-      <button type="submit" class="btn btn-primary">Guardar reporte</button>
-      <p id="msg-error" class="error hidden"></p>
-    </form>
+    <div class="section-heading">
+      <h3>Reportes recientes</h3>
+      <button id="btn-ver-todos" class="link-btn">Ver todos →</button>
+    </div>
+    <div id="lista-recientes"></div>
+    <div id="inicio-vacio" class="empty-state hidden">
+      <div class="empty-icon">🛣️</div>
+      <p>Aún no tienes reportes.</p>
+      <p class="hint">Toca "Reportar un bache" para crear el primero.</p>
+    </div>
   </section>
 
-  <!-- Vista: Lista / Dashboard -->
+  <!-- Mis Reportes -->
   <section id="view-lista" class="view">
     <div class="stats-row" id="stats-row"></div>
 
     <div class="toolbar">
       <select id="filtro-severidad">
         <option value="todos">Todas las gravedades</option>
-        <option value="leve">🟢 Leve</option>
-        <option value="moderado">🟠 Moderado</option>
-        <option value="grave">🔴 Grave</option>
+        <option value="leve">⭐ Leve</option>
+        <option value="moderado">⭐ Moderado</option>
+        <option value="grave">⭐ Grave</option>
       </select>
       <select id="orden-reportes">
         <option value="recientes">Más recientes</option>
         <option value="antiguos">Más antiguos</option>
         <option value="graves">Gravedad</option>
       </select>
-      <button id="btn-exportar" class="btn btn-ghost btn-small" title="Descargar reportes en JSON">⬇️ Exportar</button>
+      <button id="btn-exportar" class="btn btn-ghost btn-small" title="Descargar reportes en JSON">⬇️</button>
     </div>
 
     <div id="lista-reportes"></div>
     <div id="lista-vacia" class="empty-state hidden">
       <div class="empty-icon">🛣️</div>
       <p>Todavía no hay reportes guardados.</p>
-      <p class="hint">Ve a la pestaña "Reportar" para crear el primero.</p>
+      <p class="hint">Toca el botón "+" para crear el primero.</p>
     </div>
+
+    <button id="fab-nuevo" class="fab" aria-label="Nuevo reporte">➕</button>
   </section>
 
-  <!-- Vista: Mapa -->
+  <!-- Mapa -->
   <section id="view-mapa" class="view">
     <div id="map"></div>
   </section>
 
+  <!-- Perfil -->
+  <section id="view-perfil" class="view">
+    <div class="perfil-card">
+      <div class="avatar">🙂</div>
+      <h3>Usuario invitado</h3>
+      <p class="hint">Modo local — sin cuenta ni servidor</p>
+    </div>
+
+    <div class="stats-row" id="stats-row-perfil"></div>
+
+    <div class="perfil-lista">
+      <button id="perfil-exportar" class="perfil-item">
+        <span>⬇️ Exportar mis reportes (JSON)</span><span>›</span>
+      </button>
+      <button id="perfil-borrar-todo" class="perfil-item perfil-item-danger">
+        <span>🗑️ Eliminar todos los reportes</span><span>›</span>
+      </button>
+      <div class="perfil-item perfil-acerca">
+        <span>ℹ️ Acerca de BacheReport</span>
+        <p class="hint">App de demostración para reporte ciudadano de baches. Los datos se guardan solo en este dispositivo. v1.0</p>
+      </div>
+    </div>
+  </section>
+
 </main>
 
+<!-- Asistente: Nuevo Reporte -->
+<div id="wizard-overlay" class="wizard-overlay hidden">
+  <div class="wizard-header">
+    <button id="wizard-back" class="icon-btn">←</button>
+    <div class="wizard-title">
+      <span class="wizard-step-badge" id="wizard-step-num">1</span>
+      <h2 id="wizard-step-title">Evidencia Visual</h2>
+    </div>
+    <button id="wizard-close" class="icon-btn">✕</button>
+  </div>
+
+  <div class="step-indicator">
+    <div class="step-dot active" data-step="1">1</div>
+    <div class="step-line"></div>
+    <div class="step-dot" data-step="2">2</div>
+    <div class="step-line"></div>
+    <div class="step-dot" data-step="3">3</div>
+    <div class="step-line"></div>
+    <div class="step-dot" data-step="4">4</div>
+  </div>
+
+  <div class="wizard-body">
+
+    <!-- Paso 1: Evidencia Visual -->
+    <div id="step-1" class="wizard-step active">
+      <h4>1 Evidencia Visual</h4>
+      <div id="grid-fotos" class="grid-fotos"></div>
+      <label id="tile-agregar-foto" for="input-foto-camara" class="tile-agregar">
+        <span class="tile-icono">📷</span>
+        <span>Subir Foto del Bache</span>
+      </label>
+      <input type="file" id="input-foto-camara" accept="image/*" capture="environment" class="hidden">
+      <input type="file" id="input-foto-galeria" accept="image/*" class="hidden">
+      <button type="button" id="btn-elegir-galeria" class="btn btn-ghost btn-block">🖼️ Elegir de galería</button>
+      <p class="hint" id="contador-fotos">Toque para agregar fotos (0/3)</p>
+      <button id="btn-paso1-siguiente" class="btn btn-primary" disabled>Siguiente</button>
+    </div>
+
+    <!-- Paso 2: Ubicación -->
+    <div id="step-2" class="wizard-step">
+      <h4>2 Ubicación del Bache</h4>
+      <div class="map-picker-wrap">
+        <div id="map-picker"></div>
+        <button id="btn-recentrar" class="map-target-btn" aria-label="Usar mi ubicación">🎯</button>
+      </div>
+      <div class="direccion-card">
+        <span id="spinner-ubicacion" class="spinner hidden"></span>
+        <p id="texto-ubicacion">Obteniendo tu ubicación...</p>
+      </div>
+      <button type="button" id="btn-confirmar-ubicacion" class="btn btn-confirm" disabled>Confirmar Ubicación</button>
+      <button type="button" id="btn-mapa-completo" class="link-btn-center">🔗 Mapa Completo</button>
+    </div>
+
+    <!-- Paso 3: Detalles -->
+    <div id="step-3" class="wizard-step">
+      <h4>3 Detalles del Reporte</h4>
+      <div class="field">
+        <label>Gravedad</label>
+        <div class="gravedad-selector" id="gravedad-selector">
+          <button type="button" class="star-card star-leve" data-valor="leve"><span class="star">⭐</span>Leve</button>
+          <button type="button" class="star-card star-moderado active" data-valor="moderado"><span class="star">⭐</span>Moderado</button>
+          <button type="button" class="star-card star-grave" data-valor="grave"><span class="star">⭐</span>Grave</button>
+        </div>
+      </div>
+      <div class="field">
+        <label for="input-tipo">Tipo de Bache</label>
+        <select id="input-tipo">
+          <option>Agujero pequeño</option>
+          <option>Agujero grande</option>
+          <option>Grieta</option>
+          <option>Hundimiento</option>
+          <option>Bache múltiple</option>
+          <option>Otro</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="input-descripcion">Descripción</label>
+        <textarea id="input-descripcion" rows="3" placeholder="Añada comentarios sobre el bache, tamaño, peligro, etc."></textarea>
+      </div>
+      <button type="button" id="btn-paso3-siguiente" class="btn btn-primary">Siguiente</button>
+    </div>
+
+    <!-- Paso 4: Estado y seguimiento -->
+    <div id="step-4" class="wizard-step">
+      <h4>4 Estado y Seguimiento</h4>
+      <div class="seguimiento-stepper">
+        <div class="seg-punto activo"><span class="seg-circulo">✓</span><span>Reportado</span></div>
+        <div class="seg-linea"></div>
+        <div class="seg-punto"><span class="seg-circulo"></span><span>En Revisión</span></div>
+        <div class="seg-linea"></div>
+        <div class="seg-punto"><span class="seg-circulo"></span><span>Programado</span></div>
+        <div class="seg-linea"></div>
+        <div class="seg-punto"><span class="seg-circulo"></span><span>Reparado</span></div>
+      </div>
+
+      <div class="field field-toggle">
+        <label for="input-urgencia">Urgencia — Alta Prioridad</label>
+        <label class="switch">
+          <input type="checkbox" id="input-urgencia">
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="field">
+        <label for="input-referencia">Referencia Visual</label>
+        <input type="text" id="input-referencia" placeholder="Input or puntos de referencia">
+      </div>
+
+      <div class="field field-check">
+        <label for="input-anonimo">Reportar de forma anónima</label>
+        <input type="checkbox" id="input-anonimo">
+      </div>
+
+      <button type="submit" id="btn-enviar-reporte" class="btn btn-primary">✅ Enviar Reporte</button>
+      <p id="msg-error" class="error hidden"></p>
+    </div>
+
+  </div>
+</div>
+
 <nav class="bottom-nav">
-  <button class="nav-btn active" data-view="view-reportar">
-    <span class="nav-icon">➕</span><span>Reportar</span>
+  <button class="nav-btn active" data-view="view-inicio">
+    <span class="nav-icon">🏠</span><span>Inicio</span>
   </button>
   <button class="nav-btn" data-view="view-lista">
-    <span class="nav-icon">📋</span><span>Reportes</span>
+    <span class="nav-icon">📋</span><span>Mis Reportes</span>
   </button>
   <button class="nav-btn" data-view="view-mapa">
     <span class="nav-icon">🗺️</span><span>Mapa</span>
+  </button>
+  <button class="nav-btn" data-view="view-perfil">
+    <span class="nav-icon">👤</span><span>Perfil</span>
   </button>
 </nav>
 
