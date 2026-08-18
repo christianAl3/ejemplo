@@ -1,23 +1,37 @@
-# Reporta tu Bache
+# BacheApp — Reporta tu Bache
 
-Aplicación web simple para reportar baches: toma una foto con la cámara del
-celular, captura la ubicación GPS y guarda el reporte en una lista y en un
-mapa. Todo corre localmente en el navegador, sin servidor, sin base de
+Aplicación web para reportar baches: toma (o elige) una foto, captura la
+ubicación GPS, define su gravedad y le da seguimiento con estado. Incluye
+un mini-dashboard, filtros, mapa con marcadores por color y exportación de
+datos. Todo corre localmente en el navegador, sin servidor, sin base de
 datos y sin costo.
 
-## Cómo funciona
+## Funciones
 
-- **Foto**: usa `<input type="file" capture="environment">`, que abre
-  directamente la cámara del celular (no requiere permisos especiales de
-  JavaScript).
-- **Ubicación**: usa la API `navigator.geolocation` del navegador (GPS del
-  celular). Además intenta convertir las coordenadas en una dirección legible
-  usando Nominatim (OpenStreetMap), gratis y sin API key. Si no hay
-  internet, simplemente muestra las coordenadas.
-- **Guardado**: los reportes se guardan en `localStorage` del navegador, o
-  sea quedan en el celular, no se suben a ningún servidor.
-- **Mapa**: usa Leaflet + mosaicos de OpenStreetMap (gratis, sin cuenta ni
-  API key) para mostrar todos los baches reportados.
+- **Foto**: botón de cámara (`capture="environment"`) o botón para elegir
+  una imagen ya existente de la galería — útil si estás probando sin poder
+  fotografiar un bache real en el momento.
+- **Ubicación**: usa `navigator.geolocation` (GPS del celular) con spinner
+  de carga, y convierte las coordenadas en dirección legible con Nominatim
+  (OpenStreetMap, gratis, sin API key). Sin internet, muestra solo
+  coordenadas.
+- **Gravedad**: selector visual (leve / moderado / grave).
+- **Dashboard**: tarjetas con total de reportes, cuántos son graves y
+  cuántos ya están resueltos.
+- **Estado del reporte**: cada reporte inicia como "Pendiente"; toca la
+  etiqueta de estado para avanzarlo a "En revisión" y luego "Resuelto".
+- **Filtros y orden**: filtra la lista por gravedad y ordénala por fecha o
+  por gravedad.
+- **Compartir**: botón para compartir un reporte (usa el share nativo del
+  celular, o copia el texto si el navegador no lo soporta).
+- **Exportar**: descarga todos los reportes en un archivo `.json` como
+  respaldo o para anexarlo a tu entrega.
+- **Guardado**: los reportes se guardan en `localStorage` del navegador,
+  quedan en el celular, no se suben a ningún servidor.
+- **Mapa**: Leaflet + mosaicos de OpenStreetMap (gratis, sin cuenta) con
+  marcadores de color según la gravedad del bache.
+- **Instalable**: incluye `manifest.json` e ícono para poder añadirla a la
+  pantalla de inicio como si fuera una app nativa.
 
 ## Cómo probarla/presentarla en tu celular (gratis, sin publicar nada)
 
