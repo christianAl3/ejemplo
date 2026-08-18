@@ -23,7 +23,12 @@ body {
   color: var(--texto);
   padding-top: 58px;
   padding-bottom: 78px;
+  transition: padding-top 0.15s ease;
 }
+body.tiene-banner { padding-top: 106px; }
+body.tiene-banner .wizard-overlay { padding-top: 106px; }
+body.tiene-banner .wizard-header { top: 106px; }
+body.tiene-banner .step-indicator { top: 161px; }
 
 h1, h2, h3, h4 { font-family: 'Poppins', 'Inter', sans-serif; }
 
@@ -70,6 +75,42 @@ h1, h2, h3, h4 { font-family: 'Poppins', 'Inter', sans-serif; }
   background: var(--peligro);
   border-radius: 50%;
   border: 1.5px solid var(--azul-oscuro);
+}
+
+/* Banner de instalacion (beforeinstallprompt) */
+.install-banner {
+  position: fixed;
+  top: 58px; left: 0; right: 0;
+  z-index: 30;
+  background: #fff7e6;
+  border-bottom: 1px solid #ffd98a;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  animation: fadeIn 0.2s ease;
+}
+.install-banner-icon { font-size: 1.1rem; flex-shrink: 0; }
+.install-banner-texto { flex: 1; font-size: 0.8rem; font-weight: 600; color: #7a5300; line-height: 1.2; }
+.btn-cta-mini {
+  background: var(--azul);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.icon-btn-mini {
+  background: none;
+  border: none;
+  color: #7a5300;
+  font-size: 0.95rem;
+  cursor: pointer;
+  padding: 4px;
+  flex-shrink: 0;
 }
 
 main { padding: 16px; max-width: 480px; margin: 0 auto; }

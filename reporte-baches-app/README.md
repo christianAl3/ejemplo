@@ -99,12 +99,16 @@ navegador, y que abre incluso sin internet después de la primera vez).
 **En Android (Chrome):**
 1. Abre la app por cualquiera de las opciones anteriores (recomendado: la
    Opción 1, abriendo `index.html` directamente).
-2. Toca el menú (⋮) de Chrome.
-3. Elige **"Instalar aplicación"** (o **"Añadir a pantalla de inicio"** si
-   no aparece esa opción).
-4. Confirma. Te queda un ícono azul con el logo de BacheReport en tu
-   pantalla de inicio, y al abrirlo se ve como una app nativa, sin la
-   barra del navegador.
+2. En cuanto Chrome detecta que la app es instalable te muestra
+   automáticamente un banner amarillo arriba con el botón **"Instalar"**
+   — solo tócalo y confirma.
+3. Si el banner no aparece de inmediato (a veces Chrome tarda un par de
+   visitas en mostrarlo, o lo cerraste antes), instálala manualmente:
+   menú (⋮) → **"Instalar aplicación"** (o **"Añadir a pantalla de
+   inicio"** si no aparece esa opción).
+4. Te queda un ícono azul con el logo de BacheReport en tu pantalla de
+   inicio, y al abrirlo se ve como una app nativa, sin la barra del
+   navegador.
 
 **En iPhone (Safari):**
 1. Abre la app en Safari (no funciona desde Chrome en iOS para este paso).

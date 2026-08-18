@@ -601,3 +601,44 @@ if ('serviceWorker' in navigator) {
     });
   });
 }
+
+// --- Banner de instalacion automatico ---
+const installBanner = document.getElementById('install-banner');
+const btnInstalar = document.getElementById('btn-instalar');
+const btnCerrarBanner = document.getElementById('btn-cerrar-banner');
+let promptDiferido = null;
+
+function mostrarBannerInstalacion() {
+  if (localStorage.getItem('instalacion_descartada')) return;
+  installBanner.classList.remove('hidden');
+  document.body.classList.add('tiene-banner');
+}
+function ocultarBannerInstalacion() {
+  installBanner.classList.add('hidden');
+  document.body.classList.remove('tiene-banner');
+}
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  promptDiferido = e;
+  mostrarBannerInstalacion();
+});
+
+btnInstalar.addEventListener('click', async () => {
+  if (!promptDiferido) return;
+  ocultarBannerInstalacion();
+  promptDiferido.prompt();
+  const { outcome } = await promptDiferido.userChoice;
+  promptDiferido = null;
+  if (outcome === 'accepted') mostrarToast('✅ BacheReport instalado');
+});
+
+btnCerrarBanner.addEventListener('click', () => {
+  ocultarBannerInstalacion();
+  localStorage.setItem('instalacion_descartada', '1');
+});
+
+window.addEventListener('appinstalled', () => {
+  ocultarBannerInstalacion();
+  mostrarToast('✅ BacheReport instalado en tu celular');
+});
