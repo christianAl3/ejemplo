@@ -91,11 +91,31 @@ servidor normal, con `Ctrl+C`.
 > Opción 1, o conecta ambos dispositivos a un hotspot personal del
 > celular en vez de la WiFi de la red.
 
-### Opción 3 — Instalarla como "app" en la pantalla de inicio
-Una vez abierta en Chrome (por cualquiera de las opciones anteriores),
-toca el menú (⋮) → **"Añadir a pantalla de inicio"**. Te queda un ícono
-como si fuera una app normal, para presentarla más fácil el día de la
-entrega.
+### Opción 3 — Instalarla como app de verdad en la pantalla de inicio
+La app ya incluye `manifest.json` + `service-worker.js`, así que Chrome la
+reconoce como una app instalable (con su propio ícono, sin barra de
+navegador, y que abre incluso sin internet después de la primera vez).
+
+**En Android (Chrome):**
+1. Abre la app por cualquiera de las opciones anteriores (recomendado: la
+   Opción 1, abriendo `index.html` directamente).
+2. Toca el menú (⋮) de Chrome.
+3. Elige **"Instalar aplicación"** (o **"Añadir a pantalla de inicio"** si
+   no aparece esa opción).
+4. Confirma. Te queda un ícono azul con el logo de BacheReport en tu
+   pantalla de inicio, y al abrirlo se ve como una app nativa, sin la
+   barra del navegador.
+
+**En iPhone (Safari):**
+1. Abre la app en Safari (no funciona desde Chrome en iOS para este paso).
+2. Toca el botón de compartir (el cuadro con la flecha hacia arriba).
+3. Elige **"Añadir a pantalla de inicio"**.
+4. Confirma. Igual te queda el ícono de BacheReport en tu pantalla.
+
+Después de abrirla instalada una primera vez, el service worker guarda
+una copia de la app en el celular, así que la puedes abrir de nuevo
+aunque no tengas internet (el mapa y la geocodificación de direcciones sí
+necesitan conexión, el resto no).
 
 ## Limitaciones a tener en cuenta para tu presentación
 

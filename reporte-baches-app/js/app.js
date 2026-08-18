@@ -591,3 +591,13 @@ document.getElementById('perfil-borrar-todo').addEventListener('click', async ()
 // --- Inicio ---
 renderInicio();
 actualizarNotifDot();
+
+// PWA: habilita instalar la app y que funcione sin internet tras la primera carga
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('service-worker.js').catch(() => {
+      // Sin soporte (p.ej. algunos navegadores en file://): la app sigue
+      // funcionando normal, solo sin cache offline.
+    });
+  });
+}
