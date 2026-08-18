@@ -71,6 +71,26 @@ GPS no te lo pide o no funciona por el `file://`, usa la opción 2.
 > estar en `http://` sobre la red local, usa la Opción 1 (abrir el archivo
 > directamente), que en Chrome Android sí suele permitirlo.
 
+### Opción 2b — Igual que la Opción 2, pero con código QR
+Para no tener que escribir la IP a mano en el celular, usa el script
+`serve_qr.py` incluido: levanta el mismo servidor y además imprime un
+código QR en la terminal que apunta directo a la app.
+
+```
+pip install qrcode
+python serve_qr.py
+```
+
+Escanea el QR con la cámara del celular (conectado a la misma WiFi que la
+computadora) y se abre la app directamente. Se cierra igual que el
+servidor normal, con `Ctrl+C`.
+
+> Esta opción tiene la misma limitación de red que la Opción 2: si la
+> WiFi (por ejemplo, la de una escuela) bloquea que los dispositivos se
+> vean entre sí, ni el QR ni la IP van a conectar. En ese caso usa la
+> Opción 1, o conecta ambos dispositivos a un hotspot personal del
+> celular en vez de la WiFi de la red.
+
 ### Opción 3 — Instalarla como "app" en la pantalla de inicio
 Una vez abierta en Chrome (por cualquiera de las opciones anteriores),
 toca el menú (⋮) → **"Añadir a pantalla de inicio"**. Te queda un ícono
