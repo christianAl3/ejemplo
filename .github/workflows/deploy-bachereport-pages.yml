@@ -1,9 +1,6 @@
 name: Publicar BacheReport en GitHub Pages
 
 on:
-  push:
-    branches: [claude/pothole-report-app-70o3nz]
-    paths: ["reporte-baches-app/**"]
   workflow_dispatch:
 
 permissions:
