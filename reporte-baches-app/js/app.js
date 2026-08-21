@@ -45,14 +45,44 @@ function pedirConfirmacion(mensaje) {
   });
 }
 
-// --- Navegación entre pestañas ---
+// --- Feedback tactil generico al tocar cualquier boton/tarjeta interactiva ---
+const SELECTOR_TOCABLE = '.btn, .nav-btn, .fab, .icon-btn, .icon-btn-mini, .star-card, ' +
+  '.status-badge, .perfil-item, .stat-card, .foto-borrar, .tile-agregar, .badge';
+document.addEventListener('pointerdown', (e) => {
+  const el = e.target.closest(SELECTOR_TOCABLE);
+  if (!el) return;
+  el.classList.remove('tocado');
+  void el.offsetWidth;
+  el.classList.add('tocado');
+});
+document.addEventListener('animationend', (e) => {
+  if (e.animationName === 'rebote-toque') e.target.classList.remove('tocado');
+});
+
+// --- Navegación entre pestañas (con transicion deslizante) ---
+const ORDEN_PESTANAS = ['view-inicio', 'view-lista', 'view-mapa', 'view-perfil'];
+
 document.querySelectorAll('.nav-btn').forEach(btn => {
   btn.addEventListener('click', () => {
-    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-    btn.classList.add('active');
     const viewId = btn.dataset.view;
-    document.getElementById(viewId).classList.add('active');
+    if (btn.classList.contains('active')) return;
+
+    const vistaAnterior = document.querySelector('.view.active');
+    const idxAnterior = vistaAnterior ? ORDEN_PESTANAS.indexOf(vistaAnterior.id) : 0;
+    const idxNueva = ORDEN_PESTANAS.indexOf(viewId);
+    const entraDesdeDerecha = idxNueva > idxAnterior;
+
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active', 'entra-derecha', 'entra-izquierda'));
+    btn.classList.add('active');
+
+    const vistaNueva = document.getElementById(viewId);
+    vistaNueva.classList.add('active', entraDesdeDerecha ? 'entra-derecha' : 'entra-izquierda');
+
+    const icono = btn.querySelector('.nav-icon');
+    icono.classList.remove('rebote');
+    void icono.offsetWidth;
+    icono.classList.add('rebote');
 
     if (viewId === 'view-inicio') renderInicio();
     if (viewId === 'view-lista') renderLista();
@@ -145,9 +175,11 @@ wizardBack.addEventListener('click', () => {
 });
 
 function irAPaso(n) {
+  const entraDesdeDerecha = n >= pasoActual;
   pasoActual = n;
-  document.querySelectorAll('.wizard-step').forEach(s => s.classList.remove('active'));
-  document.getElementById(`step-${n}`).classList.add('active');
+  document.querySelectorAll('.wizard-step').forEach(s => s.classList.remove('active', 'entra-derecha', 'entra-izquierda'));
+  const pasoNuevo = document.getElementById(`step-${n}`);
+  pasoNuevo.classList.add('active', entraDesdeDerecha ? 'entra-derecha' : 'entra-izquierda');
 
   wizardStepNum.textContent = n;
   wizardStepTitle.textContent = TITULOS_PASO[n - 1];
@@ -383,15 +415,32 @@ const btnExportar = document.getElementById('btn-exportar');
 const listaReportes = document.getElementById('lista-reportes');
 const listaVacia = document.getElementById('lista-vacia');
 
+function animarNumero(el, valorFinal) {
+  const inicio = performance.now();
+  const duracion = 420;
+  function paso(ahora) {
+    const t = Math.min((ahora - inicio) / duracion, 1);
+    const facilitado = 1 - Math.pow(1 - t, 3);
+    el.textContent = Math.round(valorFinal * facilitado);
+    if (t < 1) requestAnimationFrame(paso);
+  }
+  requestAnimationFrame(paso);
+}
+
 function renderStatsEn(contenedorId, reportes) {
   const total = reportes.length;
   const graves = reportes.filter(r => r.severidad === 'grave').length;
   const reparados = reportes.filter(r => r.estado === 'reparado').length;
-  document.getElementById(contenedorId).innerHTML = `
-    <div class="stat-card stat-total"><span class="num">${total}</span><span class="lbl">Total</span></div>
-    <div class="stat-card stat-graves"><span class="num">${graves}</span><span class="lbl">Graves</span></div>
-    <div class="stat-card stat-resueltos"><span class="num">${reparados}</span><span class="lbl">Reparados</span></div>
+  const contenedor = document.getElementById(contenedorId);
+  contenedor.innerHTML = `
+    <div class="stat-card stat-total"><span class="num">0</span><span class="lbl">Total</span></div>
+    <div class="stat-card stat-graves"><span class="num">0</span><span class="lbl">Graves</span></div>
+    <div class="stat-card stat-resueltos"><span class="num">0</span><span class="lbl">Reparados</span></div>
   `;
+  const [numTotal, numGraves, numReparados] = contenedor.querySelectorAll('.num');
+  animarNumero(numTotal, total);
+  animarNumero(numGraves, graves);
+  animarNumero(numReparados, reparados);
 }
 
 function obtenerReportesFiltrados() {
@@ -410,6 +459,8 @@ function obtenerReportesFiltrados() {
   return reportes;
 }
 
+let ultimoEstadoCambiado = null;
+
 function crearTarjetaReporte(r, opciones = {}) {
   const card = document.createElement('div');
   card.className = 'reporte-card';
@@ -420,7 +471,7 @@ function crearTarjetaReporte(r, opciones = {}) {
     <div class="reporte-info">
       <div class="reporte-top">
         <span class="badge badge-${r.severidad}">${r.severidad}${r.urgente ? ' 🔥' : ''}</span>
-        <button class="status-badge status-${estado}" data-id="${r.id}" title="Toca para cambiar el estado">${ESTADO_LABEL[estado]}</button>
+        <button class="status-badge status-${estado}${r.id === ultimoEstadoCambiado ? ' destello' : ''}" data-id="${r.id}" title="Toca para cambiar el estado">${ESTADO_LABEL[estado]}</button>
       </div>
       <p>${r.tipo ? `<strong>${r.tipo}.</strong> ` : ''}${r.descripcion || 'Sin descripción'}</p>
       <p class="hint">${r.direccion || `${r.lat.toFixed(5)}, ${r.lng.toFixed(5)}`}</p>
@@ -432,6 +483,7 @@ function crearTarjetaReporte(r, opciones = {}) {
       </div>`}
     </div>
   `;
+  if (r.id === ultimoEstadoCambiado) ultimoEstadoCambiado = null;
 
   card.querySelector('.status-badge').addEventListener('click', () => {
     const reportes = cargarReportes();
@@ -440,6 +492,7 @@ function crearTarjetaReporte(r, opciones = {}) {
     const idxActual = ESTADOS.indexOf(reporte.estado || 'reportado');
     reporte.estado = ESTADOS[(idxActual + 1) % ESTADOS.length];
     guardarReportes(reportes);
+    ultimoEstadoCambiado = r.id;
     renderLista();
     renderInicio();
     actualizarNotifDot();

@@ -16,6 +16,71 @@
 
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
+/* ===== Animaciones e interactividad ===== */
+@keyframes rebote-toque {
+  0% { transform: scale(1); }
+  35% { transform: scale(0.88); }
+  70% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+@keyframes rebote-icono {
+  0% { transform: scale(1) rotate(0deg); }
+  30% { transform: scale(1.35) rotate(-8deg); }
+  55% { transform: scale(0.92) rotate(4deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+@keyframes entra-derecha {
+  from { opacity: 0; transform: translateX(26px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes entra-izquierda {
+  from { opacity: 0; transform: translateX(-26px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes pulso-glow {
+  0%, 100% { box-shadow: 0 6px 16px rgba(37,87,214,0.45); }
+  50% { box-shadow: 0 6px 26px rgba(37,87,214,0.75), 0 0 0 8px rgba(37,87,214,0.12); }
+}
+@keyframes pulso-punto {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.35); opacity: 0.6; }
+}
+@keyframes destello {
+  0% { box-shadow: 0 0 0 0 rgba(37,87,214,0.5); }
+  100% { box-shadow: 0 0 0 10px rgba(37,87,214,0); }
+}
+@keyframes aparece-numero {
+  from { opacity: 0; transform: translateY(4px) scale(0.85); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Feedback tactil generico: cualquier .btn, .nav-btn, .fab, etc recibe esta
+   clase por JS al tocarse, para sentirse "presionado" sin esperar :active */
+.tocado { animation: rebote-toque 0.28s cubic-bezier(.34,1.56,.64,1); }
+
+.nav-icon.rebote { display: inline-block; animation: rebote-icono 0.45s ease; }
+
+.view.entra-derecha { animation: entra-derecha 0.26s cubic-bezier(.22,.85,.35,1); }
+.view.entra-izquierda { animation: entra-izquierda 0.26s cubic-bezier(.22,.85,.35,1); }
+
+.wizard-step.entra-derecha { animation: entra-derecha 0.22s cubic-bezier(.22,.85,.35,1); }
+.wizard-step.entra-izquierda { animation: entra-izquierda 0.22s cubic-bezier(.22,.85,.35,1); }
+
+.numero-actualizado { animation: aparece-numero 0.3s ease; }
+
+.status-badge.destello { animation: destello 0.5s ease; }
+
+* { scroll-behavior: smooth; }
+
+.btn, .nav-btn, .fab, .icon-btn, .icon-btn-mini, .star-card, .status-badge,
+.perfil-item, .stat-card, .foto-borrar, .modal-actions .btn {
+  transition: transform 0.12s ease;
+}
+.btn:active, .nav-btn:active, .fab:active, .icon-btn:active, .icon-btn-mini:active,
+.star-card:active, .status-badge:active, .perfil-item:active, .foto-borrar:active {
+  transform: scale(0.93);
+}
+
 body {
   margin: 0;
   font-family: 'Inter', -apple-system, Roboto, sans-serif;
@@ -75,6 +140,7 @@ h1, h2, h3, h4 { font-family: 'Poppins', 'Inter', sans-serif; }
   background: var(--peligro);
   border-radius: 50%;
   border: 1.5px solid var(--azul-oscuro);
+  animation: pulso-punto 1.6s ease-in-out infinite;
 }
 
 /* Banner de instalacion (beforeinstallprompt) */
@@ -139,6 +205,11 @@ main { padding: 16px; max-width: 480px; margin: 0 auto; }
   width: 100%;
   padding: 13px;
   font-weight: 700;
+  animation: pulso-cta 2.4s ease-in-out infinite;
+}
+@keyframes pulso-cta {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.025); }
 }
 
 .section-heading { display: flex; justify-content: space-between; align-items: center; margin: 18px 0 10px; }
@@ -238,16 +309,21 @@ textarea:focus, select:focus, input:focus { outline: 2px solid var(--azul); outl
   color: var(--texto-suave);
   position: relative;
 }
-.nav-btn span:last-child { font-size: 0.64rem; font-weight: 600; }
+.nav-btn span:last-child { font-size: 0.64rem; font-weight: 600; transition: color 0.15s ease; }
 .nav-btn.active { color: var(--azul); }
 .nav-btn.active::before {
   content: '';
   position: absolute;
   top: 0; left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-50%) scaleX(0);
   width: 26px; height: 3px;
   background: var(--azul);
   border-radius: 0 0 4px 4px;
+  animation: expandir-indicador 0.22s ease forwards;
+}
+@keyframes expandir-indicador {
+  from { transform: translateX(-50%) scaleX(0); }
+  to { transform: translateX(-50%) scaleX(1); }
 }
 
 .fab {
@@ -262,6 +338,7 @@ textarea:focus, select:focus, input:focus { outline: 2px solid var(--azul); outl
   box-shadow: 0 6px 16px rgba(37,87,214,0.45);
   z-index: 15;
   cursor: pointer;
+  animation: pulso-glow 2.6s ease-in-out infinite;
 }
 
 /* Dashboard / stats */
@@ -573,11 +650,11 @@ textarea:focus, select:focus, input:focus { outline: 2px solid var(--azul); outl
   font-size: 0.82rem;
   cursor: pointer;
 }
-.star-card .star { font-size: 1.3rem; filter: grayscale(1) opacity(0.6); }
-.star-card.active .star { filter: none; }
-.star-card.star-leve.active { background: var(--verde); color: white; }
-.star-card.star-moderado.active { background: var(--amber); color: white; }
-.star-card.star-grave.active { background: var(--peligro); color: white; }
+.star-card .star { font-size: 1.3rem; filter: grayscale(1) opacity(0.6); transition: transform 0.2s ease; }
+.star-card.active .star { filter: none; transform: scale(1.2) rotate(-8deg); }
+.star-card.star-leve.active { background: var(--verde); color: white; animation: rebote-toque 0.3s cubic-bezier(.34,1.56,.64,1); }
+.star-card.star-moderado.active { background: var(--amber); color: white; animation: rebote-toque 0.3s cubic-bezier(.34,1.56,.64,1); }
+.star-card.star-grave.active { background: var(--peligro); color: white; animation: rebote-toque 0.3s cubic-bezier(.34,1.56,.64,1); }
 
 /* Paso 4 */
 .seguimiento-stepper { display: flex; align-items: flex-start; margin-bottom: 24px; }
