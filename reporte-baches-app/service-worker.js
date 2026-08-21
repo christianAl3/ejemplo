@@ -1,4 +1,4 @@
-const CACHE_NAME = 'bachereport-v1';
+const CACHE_NAME = 'bachereport-v2';
 const ARCHIVOS_APP = [
   './index.html',
   './css/style.css',
@@ -26,8 +26,10 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// Cache-first para el cascaron de la app; todo lo demas (mapas, geocoding)
-// sigue yendo a la red normalmente.
+// Network-first para el cascaron de la app: siempre intenta traer la
+// version mas reciente primero, y solo usa la copia guardada si no hay
+// internet. Asi los cambios (como animaciones o estilos) se ven de
+// inmediato en vez de quedarse pegados en una version vieja en cache.
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 
@@ -35,13 +37,12 @@ self.addEventListener('fetch', (event) => {
   if (url.origin !== self.location.origin) return;
 
   event.respondWith(
-    caches.match(event.request).then((cacheada) => {
-      if (cacheada) return cacheada;
-      return fetch(event.request).then((respuesta) => {
+    fetch(event.request)
+      .then((respuesta) => {
         const copia = respuesta.clone();
         caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copia));
         return respuesta;
-      }).catch(() => cacheada);
-    })
+      })
+      .catch(() => caches.match(event.request))
   );
 });
